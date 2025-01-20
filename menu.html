@@ -320,28 +320,37 @@
 
 
         function playVideo(streamUrl, channelName) {
-        const video = document.getElementById("video1");
-        const selectedName = document.getElementById("selected-name");
+            const video = document.getElementById("video1");
+            const selectedName = document.getElementById("selected-name");
 
-        // Atualiza o nome do canal abaixo do player
-        selectedName.textContent = channelName;
+            // Atualiza o nome do canal abaixo do player
+            selectedName.textContent = channelName;
 
-        if (streamUrl.endsWith('.m3u8') && Hls.isSupported()) {
-            const hls = new Hls();
-            hls.loadSource(streamUrl);
-            hls.attachMedia(video);
-            video.style.display = "block";
-            video.play();
-        } else if (streamUrl.endsWith('.mp4')) {
-            video.src = streamUrl; // Para MP4, define diretamente o src
-            video.style.display = "block";
-            video.play();
-        } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
-            video.src = streamUrl;
-            video.style.display = "block";
-            video.play();
+            // Verifica se a URL termina com '.m3u8' e se o HLS é suportado
+            if (streamUrl.endsWith('.m3u8') && Hls.isSupported()) {
+                const hls = new Hls(); // Cria uma nova instância do HLS.js
+                hls.loadSource(streamUrl); // Carrega o fluxo .m3u8
+                hls.attachMedia(video); // Anexa o fluxo ao elemento de vídeo
+                video.style.display = "block"; // Exibe o player de vídeo
+                video.play(); // Inicia a reprodução do vídeo
+            } 
+            // Verifica se a URL termina com '.mp4'
+            else if (streamUrl.endsWith('.mp4')) {
+                video.src = streamUrl; // Define o src para o MP4 diretamente
+                video.style.display = "block"; // Exibe o player de vídeo
+                video.play(); // Inicia a reprodução do vídeo
+            } 
+            // Verifica se o navegador suporta o tipo de conteúdo para streaming
+            else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+                video.src = streamUrl; // Define o src para o fluxo HLS
+                video.style.display = "block"; // Exibe o player de vídeo
+                video.play(); // Inicia a reprodução do vídeo
+            } 
+            else {
+                console.error("Formato de vídeo não suportado.");
+            }
         }
-    }
+
 
 
     </script>
